@@ -63,7 +63,7 @@ class ChatClient:
         if new_message.strip():
             self.clientSocket.send(new_message.encode()) #sends message to server
             self.update_chat_history(f"{self.client_id}: {new_message}", align="center") #displays the sent message 
-            self.client_entry.delete(0, END) #clears the bos for entries 
+            self.client_entry.delete(0, END) #clears box for entries 
 
     def receive_message(self):
         """Listens for incoming messages from the server and updates chat history if new message is received """
