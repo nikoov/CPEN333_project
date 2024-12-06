@@ -1,5 +1,5 @@
 # Group#: G12
-# Student Names: Julia Wadey, Nikoo Vali , Sara Hematy
+# Student Names: Julia Wadey, Nikoo Vali, Sara Hematy
 
 # Global constants
 WINDOW_WIDTH = 500
