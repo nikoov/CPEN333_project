@@ -114,7 +114,7 @@ class ChatServer:
                     disconnected_client = self.clients_list.pop(client_socket, "Unknown")
                     disconnect_message = f"{disconnected_client} has left the chat."
                     self.broadcast_message(disconnect_message)
-                    #self.remove_client(client_socket)
+                    self.remove_client(client_socket)
 
 def main(): #Note that the main function is outside the ChatServer class
     window = Tk()
