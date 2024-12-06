@@ -1,6 +1,8 @@
 # CPEN333_project
 Part 1 : Implementing a multithreaded game with graphic user interface :
          We are to implement a simplified snake game in this project.
+
+         
 Part 1 -Alternative: Complete implementation of part1 (all in one .py file, include part1_alternative as a part of the name of the file), but with one modification for the implementation related to an important aspect of the game related to this course: e.g. multi-tasking synchronization/communication, GUI, ... . Some examples of acceptable new implementation approaches would be:
 
 * instead of tkinter, using a different GUI framework, such as pygame, ...
