@@ -12,11 +12,13 @@ ICON_COLOUR = "yellow"
 """
     This program implements a variety of the snake 
     game (https://en.wikipedia.org/wiki/Snake_(video_game_genre))
-    Instead of using queueing like in part 1, part 1 alternative uses an event handler to control tasks instead.
+
+    Instead of using queueing like in part 1, part 1 alternative uses an event handler instead. Shared data 
+    is stored in a dictionary seperate from the events, each task is an event created by threading.Event()
 """
 
 import threading
-#import queue        #the thread-safe queue from Python standard library
+#import queue 
 
 from tkinter import Tk, Canvas, Button
 import random, time
@@ -57,9 +59,10 @@ class Gui():
         for key in ("Left", "Right", "Up", "Down"):
             self.root.bind(f"<Key-{key}>", game.whenAnArrowKeyIsPressed)
 
-        #thread for the event handler
+        # Thread for the event handler
         threading.Thread(target=self.event_handler_loop, daemon=True).start()
 
+    # Updates gui according to eventHandler
     def event_handler_loop(self):
         while True:
             if self.event_handler.move_event.is_set():
@@ -121,10 +124,12 @@ class EventHandler:
         elif event_type == "game_over":
             self.game_over_event.set()
 
+    # Gets data for task
     def get_task_data(self, event_type):
         with self.lock:
             return self.shared_data.get(event_type, None)
 
+    # Resets
     def clear_event(self, event):
         event.clear()
 
@@ -162,7 +167,6 @@ class Game():
         """
         SPEED = 0.15     #speed of snake updates (sec)
         while self.gameNotOver:
-            #complete the method implementation below
             self.move()
             time.sleep(SPEED)
 
@@ -212,7 +216,7 @@ class Game():
             self.score += 1
             # Create a new prey
             self.createNewPrey()
-            # self.queue.put({"score": self.score})
+            # self.queue.put({"score": self.score}), Sends the task to the event handler
             self.event_handler.set_task("score", self.score)
 
         else:
@@ -256,8 +260,7 @@ class Game():
             field and also adds a "game_over" task to the queue. 
         """
         x, y = snakeCoordinates
-        #complete the method implementation below
-            # Check wall collisions
+        # Check wall collisions
         if x < 0 or x > WINDOW_WIDTH or y < 0 or y > WINDOW_HEIGHT:
             self.gameNotOver = False
             # self.queue.put({"game_over": True})
@@ -281,14 +284,13 @@ class Game():
             away from the walls. 
         """
         THRESHOLD = 15   
-        #complete the method implementation below
         x = random.randint(THRESHOLD, WINDOW_WIDTH - THRESHOLD - PREY_ICON_WIDTH)
         y = random.randint(THRESHOLD, WINDOW_HEIGHT - THRESHOLD - PREY_ICON_WIDTH)
 
         prey_coordinates = (x, y, x + PREY_ICON_WIDTH, y + PREY_ICON_WIDTH)
    
         self.preyCoordinates = prey_coordinates
-        # self.queue.put({"prey": prey_coordinates})  # Add prey to the queue
+        # self.queue.put({"prey": prey_coordinates})  
         self.event_handler.set_task("prey", prey_coordinates)
 
 if __name__ == "__main__":
@@ -304,7 +306,7 @@ if __name__ == "__main__":
 
     # gameQueue = queue.Queue()     #instantiate a queue object using python's queue class
     
-    event_handler = EventHandler()
+    event_handler = EventHandler() # Instantiate event handler
 
     game = Game(event_handler)        #instantiate the game object
 
