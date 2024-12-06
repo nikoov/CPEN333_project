@@ -86,7 +86,7 @@ class ChatServer:
                     self.chat_history.config(state = "disabled")
                     self.chat_history.see(END)
 
-                    self.broadcast(full_message, client_socket) #broadcasts message to the other clients
+                    self.broadcast_message(full_message, client_socket) #broadcasts message to the other clients
             
             #Handles any client disconnections
             except (ConnectionResetError, BrokenPipeError): 
@@ -100,10 +100,10 @@ class ChatServer:
                 self.chat_history.see(END)
 
                 # Notifies other clients about disconnection
-                self.broadcast(disconnect_message, client_socket)
+                self.broadcast_message(disconnect_message, client_socket)
                 break
 
-    def broadcast(self, message, sender_socket=None):
+    def broadcast_message(self, message, sender_socket=None):
         """ server broadcasts message to the other clients excluding the sender """
         for client_socket in self.clients_list:
             if client_socket != sender_socket:  #makes sure the sender does not receive the message again
@@ -113,8 +113,8 @@ class ChatServer:
                     # Handles disconnection during broadcasting
                     disconnected_client = self.clients_list.pop(client_socket, "Unknown")
                     disconnect_message = f"{disconnected_client} has left the chat."
-                    self.broadcast(disconnect_message)
-                    self.remove_client(client_socket)
+                    self.broadcast_message(disconnect_message)
+                    #self.remove_client(client_socket)
 
 def main(): #Note that the main function is outside the ChatServer class
     window = Tk()
