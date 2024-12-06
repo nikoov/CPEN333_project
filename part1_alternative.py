@@ -1,5 +1,5 @@
-# Group#:
-# Student Names: 
+# Group#: G12
+# Student Names: Julia Wadey, Nikoo Vali , Sara Hematy
 
 # Global constants
 WINDOW_WIDTH = 500
@@ -209,10 +209,22 @@ class Game():
         self.isGameOver(NewSnakeCoordinates)
 
         # Check if prey is captured
-        preyCoordinatesX, preyCoordinatesY = self.preyCoordinates[0], self.preyCoordinates[1]
+        preyLeft = self.preyCoordinates[0]
+        preyTop = self.preyCoordinates[1]
+        preyRight = self.preyCoordinates[2]
+        preyBottom = self.preyCoordinates[3]
 
-        if preyCoordinatesX - 7 <= NewSnakeCoordinates[0] <= preyCoordinatesX + 7 and preyCoordinatesY - 7 <= NewSnakeCoordinates[1] <= preyCoordinatesY + 7:
-            # Update the score and notify the queue
+        # Get snake head, snake x and y coordinates are the midpoint of the line
+        snakeX = NewSnakeCoordinates[0]
+        snakeY = NewSnakeCoordinates[1]
+        snakeLeft = snakeX - SNAKE_ICON_WIDTH / 2
+        snakeRight = snakeX + SNAKE_ICON_WIDTH / 2
+        snakeTop = snakeY - SNAKE_ICON_WIDTH / 2
+        snakeBottom = snakeY + SNAKE_ICON_WIDTH / 2
+
+        #if preyCoordinatesX <= NewSnakeCoordinates[0] <= preyCoordinatesX + PREY_ICON_WIDTH and preyCoordinatesY <= NewSnakeCoordinates[1] <= preyCoordinatesY + PREY_ICON_WIDTH:
+        if (snakeLeft < preyRight and snakeRight > preyLeft and snakeTop < preyBottom and
+           snakeBottom > preyTop):
             self.score += 1
             # Create a new prey
             self.createNewPrey()
